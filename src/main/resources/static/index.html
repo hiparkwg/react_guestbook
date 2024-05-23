@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<!-- react -->
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<!--react-dom -->
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<!-- babel-loader -->
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<!--axios -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<script type="text/babel" src="js/home.js"></script>
+	<script type="text/babel" src="js/footer.js"></script>
+	<script type="text/babel" src="js/guestbook_register.js"></script>
+	<script type="text/babel" src="js/guestbook_list.js"></script>
+	<link rel="stylesheet" href="css/index.css">
+
+	<script type="text/babel">
+		const {useState} = React;
+
+		ReactDOM.render(
+			<Footer />, document.querySelector('.footer')
+		)
+
+		function changePanel(p) {
+
+			let result = document.querySelector('#result');
+			let panel = 'home'
+
+			let content = <Home />
+
+			if (p === 'home') {
+				content = <Home />
+			} else if (p === 'guestbook') {
+				content =
+					<div class='items'>
+						<div class='left'>
+							<GuestBookRegister />
+						</div>
+						<div class='right'>
+							<GuestBookList />
+						</div>
+					</div>
+
+			}
+			ReactDOM.render(
+				<div>
+					{content}
+				</div>
+
+				, result);
+
+			document.querySelector('.btnFind').click();
+		}
+
+		const FuncLogin = () => {
+			let id = document.querySelector('.id').value;
+			let pwd = document.querySelector('.pwd').value;
+			let param = {'id': id, 'pwd': pwd};
+			axios({
+				method: 'get',
+				url: "/login",
+				params: param,
+				responseType: 'json',
+			}).then((resp) => {
+				if (resp.data == '') {
+					alert('아이디 또는 암호를 확인해 주세요.')
+				} else {
+					let login = document.querySelector('.login');
+					let logout = document.querySelector('.logout');
+					
+					let frmRegister = document.querySelector(".frmRegister");
+					let userName = document.querySelector('.userName');
+
+					userName.innerHTML = resp.data + " 님 반갑습니다.";
+					login.style.display = 'none';
+					logout.style.display = 'block';
+					
+					sessionStorage.setItem("id", id);
+					sessionStorage.setItem("name", resp.data );
+					
+					if (frmRegister != null) {
+						frmRegister.id.value = id;
+					}
+				}
+			})
+		}
+
+		const FuncLogout = () => {
+			let login = document.querySelector('.login');
+			let logout = document.querySelector('.logout');
+			let frmRegister = document.querySelector(".frmRegister");
+
+			login.style.display = 'block';
+			logout.style.display = 'none';
+
+			if (frmRegister != null) {
+				frmRegister.id.value = '';
+			}
+
+			sessionStorage.removeItem("id");
+			sessionStorage.removeItem("name");
+		}
+
+	</script>
+
+</head>
+
+<body>
+	<main>
+		<div id="loginZone">
+			<div class="login">
+				<span>아이디</span><input name="id" class="id" value="a001" size="10">
+				<span>암호</span><input name="pwd" class="pwd" value="1111" size="10">
+				<button type="button" class="btnLogin" onclick="FuncLogin()">로그인</button>
+			</div>
+			<div class="logout">
+				<span class="userName">홍길동님 방가</span>
+				<button type="button" class="btnLogout" onclick="FuncLogout()">로그아웃</button>
+			</div>
+		</div>
+		<header>
+			<h1>SpringBoot & React</h1>
+			<nav>
+				<button type="button" onClick="changePanel('home')">Home</button>
+				<button type="button" onClick="changePanel('guestbook')">Guestbook</button>
+			</nav>
+		</header>
+		<div id="result">우측 상단 메뉴를 클릭해 주세요.</div>
+		<div class="footer" />
+	</main>
+	
+	<script>
+		/* 로그인 여부 체크 */
+		let login = document.querySelector('.login');
+		let logout = document.querySelector('.logout');
+		if (sessionStorage.getItem("id") == null) {
+			login.style.display = 'block';
+			logout.style.display = 'none';
+
+		} else {
+			let name = sessionStorage.getItem("name");
+			let userName = document.querySelector('.userName');
+
+			userName.innerHTML = name;
+			login.style.display = 'none';
+			logout.style.display = 'block';
+		}
+	</script>
+	
+</body>
+
+</html>

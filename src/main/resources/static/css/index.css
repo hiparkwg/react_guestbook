@@ -1,0 +1,100 @@
+*{
+	box-sizing: border-box;
+}
+body{
+   width:1000px;
+   margin:40px auto;
+   background-color: #222;
+   color:#eee;
+   border-radius: 10px;
+   overflow-y: scroll
+}
+#loginZone>div{
+	display: inline-block;
+}
+#loginZone{
+	text-align: right;
+}
+#loginZone>.logout{
+	display: none;
+}
+
+header{
+   position: relative;
+}
+header>nav{
+   position: absolute;
+   bottom:2px;
+   right:2px;
+}
+header>h1{
+   text-align: center;
+   box-sizing: border-box;
+   padding-top:30px;
+}
+main #result{
+   min-height: 200px;
+   box-sizing: border-box;
+   padding:25px;
+}
+
+main .items{
+   display: flex;
+}
+.items>.left{
+   flex-grow: 1;
+   margin-right:26px;
+}
+.items>.right{
+   flex-grow: 2;
+}
+
+footer{
+   font-size:1.2em;
+   text-align: center;
+   line-height: 140px;
+   color:#fff;
+}
+header, footer{
+   border-radius: 10px;
+   height:140px;
+   background-color: #363634;
+}
+
+/* register */
+.frmRegister span{
+   display: inline-block;
+   width: 50px;
+}
+.frmRegister .btnZone{
+   margin-top:5px;
+}
+.btnControl{
+   display: none;
+}
+
+/* list */
+.findZone{
+   text-align: right;
+}
+.row:hover{
+   background-color: #445;
+   cursor: pointer;
+}
+.row .doc{
+   width:300px;
+   overflow: hidden;
+}
+tr{
+   vertical-align: top;
+}
+.title{
+	background-color: #555;
+	color:#eee;
+}
+.btnPrev, .btnNext{
+	padding:0 10px;
+	font-size:1.5em;
+	color:#666;
+	border:0;
+}

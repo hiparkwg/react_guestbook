@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper      
+    PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'      
+    'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='guestbook'>
+	<select id='login' parameterType='Map' resultType='String'>
+		select name from member where id=#{id} and pwd = #{pwd}
+	</select>
+
+
+   <select id='totSize' parameterType='String' resultType='Integer'>
+      select count(sno) from guestbook
+      where id  like '%${_parameter}%'
+      or    doc like '%${_parameter}%'
+   </select>
+
+   <select id='search' parameterType='Page'
+           resultType='GuestbookVo'>
+      select * from guestbook 
+      where id  like '%${findStr}%'
+      or    doc like '%${findStr}%'
+      order by nal desc
+      limit #{startNo}, #{listSize}
+   </select>
+   <insert id='register' parameterType='GuestbookVo'>
+      insert into guestbook(id, doc, pwd, nal)
+      values (#{id}, #{doc}, #{pwd}, #{nal} )
+   </insert>
+
+   <select id='view' parameterType='Integer' resultType='GuestBookVo'>
+      select * from guestbook where sno = #{_parameter}
+   </select>   
+
+   <update id='modify' parameterType='GuestbookVo'>
+      update guestbook set doc=#{doc}
+      where  sno=#{sno} and pwd=#{pwd}      
+   </update>
+
+   <delete id='delete' parameterType='GuestbookVo'>
+      delete from guestbook where sno=#{sno} and pwd=#{pwd}
+   </delete>
+</mapper>
